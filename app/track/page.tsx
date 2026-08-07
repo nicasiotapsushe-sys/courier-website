@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import Navbar from "../../components/Navbar";
+import Navbar from "../../components/layout/Navbar";
 
 type TrackingEvent = {
   status: string;
