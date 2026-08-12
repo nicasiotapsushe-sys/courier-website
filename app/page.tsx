@@ -1,4 +1,4 @@
-import Navbar from "../components/layout/Navbar";
+
 const services = [
   {
     title: "Same-Day Delivery",
@@ -37,58 +37,16 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
       {/* Navigation */}
-      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <a href="#" className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-700 text-xl text-white">
-              📦
-            </div>
-
-            <div>
-              <p className="text-lg font-bold leading-none text-blue-800">
-                Swift Courier
-              </p>
-              <p className="mt-1 text-xs font-medium uppercase tracking-wider text-slate-500">
-                Fast. Secure. Reliable.
-              </p>
-            </div>
-          </a>
-
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-slate-700 lg:flex">
-            <a className="transition hover:text-blue-700" href="#">
-              Home
-            </a>
-            <a className="transition hover:text-blue-700" href="#about">
-              About
-            </a>
-            <a className="transition hover:text-blue-700" href="#services">
-              Services
-            </a>
-            <a className="transition hover:text-blue-700" href="#tracking">
-              Track Parcel
-            </a>
-            <a className="transition hover:text-blue-700" href="#contact">
-              Contact
-            </a>
-          </nav>
-
-          <a
-            href="#contact"
-            className="rounded-xl bg-orange-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-orange-600"
-          >
-            Request Quote
-          </a>
-        </div>
-      </header>
+     
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-slate-950">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(37,99,235,0.45),_transparent_40%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(120deg,_rgba(15,23,42,1)_15%,_rgba(30,64,175,0.9)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(249,115,22,0.35),_transparent_45%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(120deg,_rgba(15,23,42,1)_15%,_rgba(24,24,27,0.95)_55%,_rgba(249,115,22,0.20)_100%)]" />
 
         <div className="relative mx-auto grid min-h-[680px] max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-2">
           <div>
-            <div className="mb-6 inline-flex rounded-full border border-blue-300/30 bg-blue-400/10 px-4 py-2 text-sm font-semibold text-blue-100">
+            <div className="mb-6 inline-flex rounded-full border border-orange-400/40 bg-orange-500/10 px-4 py-2 text-sm font-semibold text-blue-100">
               Trusted courier and logistics solutions
             </div>
 
@@ -167,14 +125,14 @@ export default function Home() {
                 <input
                   id="tracking-number"
                   type="text"
-                  placeholder="Example: SWC-2026-000001"
+                  placeholder="Example: DIC-2026-000001"
                   className="w-full rounded-xl border border-slate-300 px-4 py-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full rounded-xl bg-blue-700 px-6 py-4 font-bold text-white transition hover:bg-blue-800"
+                className="w-full rounded-xl bg-orange-500 px-6 py-4 font-bold text-white transition hover:bg-orange-600"
               >
                 Track Shipment
               </button>
@@ -271,7 +229,7 @@ export default function Home() {
             </h2>
 
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              Swift Courier is committed to making deliveries simple,
+              Drop It Courier Services is committed to making deliveries simple,
               affordable and dependable. We support individuals, online stores
               and established businesses with professional courier and
               logistics services.
@@ -313,7 +271,7 @@ export default function Home() {
           </div>
 
           <a
-            href="mailto:info@swiftcourier.co.bw"
+            href="mailto:info@dropit.co.bw"
             className="rounded-xl bg-white px-8 py-4 font-black text-orange-600 shadow-lg transition hover:-translate-y-0.5"
           >
             Contact Our Team
@@ -321,46 +279,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-slate-950 py-14 text-slate-300">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 md:grid-cols-3">
-          <div>
-            <p className="text-2xl font-black text-white">Swift Courier</p>
-            <p className="mt-4 max-w-sm leading-7 text-slate-400">
-              Fast, secure and reliable courier and logistics services across
-              Botswana and beyond.
-            </p>
-          </div>
-
-          <div>
-            <p className="font-bold text-white">Quick links</p>
-            <div className="mt-4 flex flex-col gap-3">
-              <a href="#about" className="hover:text-white">
-                About Us
-              </a>
-              <a href="#services" className="hover:text-white">
-                Services
-              </a>
-              <a href="#tracking" className="hover:text-white">
-                Track Parcel
-              </a>
-            </div>
-          </div>
-
-          <div>
-            <p className="font-bold text-white">Contact information</p>
-            <div className="mt-4 space-y-3 text-slate-400">
-              <p>Francistown, Botswana</p>
-              <p>+267 00 000 000</p>
-              <p>info@swiftcourier.co.bw</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="mx-auto mt-12 max-w-7xl border-t border-slate-800 px-6 pt-7 text-sm text-slate-500">
-          © 2026 Swift Courier Services. All rights reserved.
-        </div>
-      </footer>
+     
     </main>
   );
 }

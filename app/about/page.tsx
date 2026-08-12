@@ -1,50 +1,57 @@
-import Navbar from "../../components/layout/Navbar";
-
 const values = [
   {
     title: "Reliability",
     description:
-      "We keep our promises and work hard to deliver every parcel safely and on time.",
-  },
-  {
-    title: "Integrity",
-    description:
-      "We handle customer parcels, information and payments with honesty and care.",
-  },
-  {
-    title: "Customer Service",
-    description:
-      "We listen to our customers and provide helpful support throughout every delivery.",
+      "We are committed to dependable, on-time delivery and consistent service across every route we operate.",
   },
   {
     title: "Innovation",
     description:
-      "We use modern systems and tracking technology to improve the delivery experience.",
+      "We embrace modern logistics technology, route coordination and smarter systems to continuously improve our services.",
+  },
+  {
+    title: "Integrity",
+    description:
+      "We operate with professionalism, confidentiality and respect for our customers, their information and their consignments.",
+  },
+  {
+    title: "Customer Commitment",
+    description:
+      "Our customers are at the centre of our operations, with solutions designed around their individual and business logistics needs.",
+  },
+  {
+    title: "Customized Solutions",
+    description:
+      "We develop flexible logistics solutions for individuals, SMEs, corporations and specialized industries.",
   },
 ];
 
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      <Navbar />
 
-      <section className="bg-slate-950 py-24 text-white">
-        <div className="mx-auto max-w-7xl px-6">
+      {/* HERO */}
+      <section className="relative overflow-hidden bg-slate-950 py-24 text-white">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(249,115,22,0.28),_transparent_45%)]" />
+
+        <div className="relative mx-auto max-w-7xl px-6">
           <p className="text-sm font-bold uppercase tracking-widest text-orange-400">
-            About our company
+            About Drop It
           </p>
 
           <h1 className="mt-4 max-w-4xl text-5xl font-black leading-tight md:text-6xl">
-            Delivering trust, one parcel at a time.
+            Delivering excellence across every mile.
           </h1>
 
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            Swift Courier provides dependable delivery and logistics services
-            for individuals, businesses and online stores across Botswana.
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+            Established in Botswana in 2020, Drop It Courier Services is a
+            100% citizen-owned logistics company committed to redefining
+            delivery standards through speed, reliability and innovation.
           </p>
         </div>
       </section>
 
+      {/* WHO WE ARE */}
       <section className="py-24">
         <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 lg:grid-cols-2">
           <div>
@@ -53,107 +60,130 @@ export default function AboutPage() {
             </p>
 
             <h2 className="mt-3 text-4xl font-black tracking-tight">
-              A courier company built around customers.
+              A growing Botswana logistics network.
             </h2>
 
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              We understand that every parcel matters. It may contain an
-              important document, a customer order, a gift or essential
-              business supplies.
+              Drop It Courier Services provides efficient, secure and
+              customer-focused courier solutions tailored for individuals,
+              SMEs and large organizations.
             </p>
 
             <p className="mt-5 text-lg leading-8 text-slate-600">
-              Our team works to make the delivery process simple, secure and
-              transparent from collection to final delivery.
+              Since our inception, we have steadily expanded our delivery
+              network across Botswana, building strong operations in Gaborone,
+              Francistown, Mahalapye, Palapye and other key locations while
+              continuing to expand our footprint.
+            </p>
+
+            <p className="mt-5 text-lg leading-8 text-slate-600">
+              Our nationwide and cross-border logistics solutions are designed
+              to keep businesses, institutions and communities connected.
             </p>
           </div>
 
-          <div className="rounded-3xl bg-blue-700 p-10 text-white shadow-xl">
-            <p className="text-sm font-bold uppercase tracking-widest text-blue-200">
+          <div className="rounded-3xl bg-slate-950 p-10 text-white shadow-xl">
+            <p className="text-sm font-bold uppercase tracking-widest text-orange-400">
               Our commitment
             </p>
 
             <h3 className="mt-3 text-3xl font-black">
-              Fast service without compromising safety.
+              Speed, reliability and innovation.
             </h3>
 
-            <p className="mt-5 leading-8 text-blue-100">
-              We combine trained staff, careful parcel handling and clear
-              communication to provide a dependable courier experience.
+            <p className="mt-5 leading-8 text-slate-300">
+              Our operational approach combines professional handling,
+              technology, route coordination and customer-focused service to
+              provide dependable logistics solutions.
             </p>
 
             <div className="mt-8 grid grid-cols-2 gap-5">
-              <div className="rounded-2xl bg-white/10 p-5">
-                <p className="text-3xl font-black">98%</p>
-                <p className="mt-2 text-sm text-blue-100">On-time deliveries</p>
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                <p className="text-3xl font-black text-orange-400">2020</p>
+                <p className="mt-2 text-sm text-slate-300">
+                  Established in Botswana
+                </p>
               </div>
 
-              <div className="rounded-2xl bg-white/10 p-5">
-                <p className="text-3xl font-black">24/7</p>
-                <p className="mt-2 text-sm text-blue-100">Tracking access</p>
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                <p className="text-3xl font-black text-orange-400">100%</p>
+                <p className="mt-2 text-sm text-slate-300">
+                  Citizen-owned business
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* MISSION & VISION */}
       <section className="bg-slate-50 py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 md:grid-cols-2">
+
             <article className="rounded-3xl border border-slate-200 bg-white p-9 shadow-sm">
               <p className="text-sm font-bold uppercase tracking-widest text-orange-500">
-                Our mission
+                Our Mission
               </p>
 
               <h2 className="mt-3 text-3xl font-black">
-                To make delivery simple and dependable.
+                Reliable, on-time delivery.
               </h2>
 
               <p className="mt-5 leading-8 text-slate-600">
-                Our mission is to provide secure, affordable and efficient
-                courier services while giving every customer professional
-                support and peace of mind.
+                To provide our customers with reliable, on-time delivery
+                services by creating an environment focused on customer
+                satisfaction through state-of-the-art technology, ongoing
+                training, professionalism and continuous corporate
+                improvement.
               </p>
             </article>
 
             <article className="rounded-3xl border border-slate-200 bg-white p-9 shadow-sm">
-              <p className="text-sm font-bold uppercase tracking-widest text-blue-700">
-                Our vision
+              <p className="text-sm font-bold uppercase tracking-widest text-orange-500">
+                Our Vision
               </p>
 
               <h2 className="mt-3 text-3xl font-black">
-                To become a trusted logistics leader.
+                Botswana&apos;s most trusted courier service.
               </h2>
 
               <p className="mt-5 leading-8 text-slate-600">
-                Our vision is to grow into one of Southern Africa&apos;s most
-                trusted courier and logistics companies through service,
-                technology and strong customer relationships.
+                To become Botswana&apos;s most trusted and innovative courier
+                service, delivering excellence across every mile and setting
+                new standards in the logistics industry.
               </p>
             </article>
+
           </div>
         </div>
       </section>
 
+      {/* VALUES */}
       <section className="py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm font-bold uppercase tracking-widest text-orange-500">
-              Our core values
+              Our Core Values
             </p>
 
             <h2 className="mt-3 text-4xl font-black">
-              The principles behind every delivery
+              The principles behind every delivery.
             </h2>
+
+            <p className="mt-5 leading-7 text-slate-600">
+              Our values guide how we serve our customers, manage
+              consignments and build long-term partnerships.
+            </p>
           </div>
 
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-5">
             {values.map((value) => (
               <article
                 key={value.title}
-                className="rounded-2xl border border-slate-200 p-7 transition hover:-translate-y-1 hover:shadow-xl"
+                className="rounded-2xl border border-slate-200 p-7 transition hover:-translate-y-1 hover:border-orange-300 hover:shadow-xl"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 font-black text-blue-700">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 font-black text-orange-600">
                   ✓
                 </div>
 
@@ -168,26 +198,33 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* CTA */}
       <section className="bg-orange-500 py-20 text-white">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 px-6 lg:flex-row lg:items-center">
           <div>
             <p className="font-bold uppercase tracking-widest text-orange-100">
-              Work with us
+              Your logistics partner
             </p>
 
             <h2 className="mt-3 text-4xl font-black">
-              Let us handle your next delivery.
+              Let&apos;s move your business forward.
             </h2>
+
+            <p className="mt-4 max-w-2xl text-orange-50">
+              From everyday parcels to specialized business and cross-border
+              logistics, our team is ready to help.
+            </p>
           </div>
 
           <a
-            href="/contact"
-            className="rounded-xl bg-white px-8 py-4 font-black text-orange-600 shadow-lg"
+            href="/quote"
+            className="rounded-xl bg-white px-8 py-4 font-black text-orange-600 shadow-lg transition hover:bg-slate-100"
           >
-            Contact Our Team
+            Request a Quote
           </a>
         </div>
       </section>
+
     </main>
   );
 }

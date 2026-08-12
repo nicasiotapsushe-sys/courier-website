@@ -1,7 +1,7 @@
 const quickLinks = [
   { label: "About Us", href: "/about" },
   { label: "Services", href: "/services" },
-  { label: "Meet the Founder", href: "/founder" },
+ 
   { label: "Track Parcel", href: "/track" },
   { label: "Request Quote", href: "/quote" },
   { label: "Contact", href: "/contact" },
@@ -25,7 +25,7 @@ export default function Footer() {
             </div>
 
             <div>
-              <p className="text-xl font-black text-white">Swift Courier</p>
+              <p className="text-xl font-black text-white">Drop it Courier Services</p>
               <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
                 Fast. Secure. Reliable.
               </p>
@@ -68,20 +68,20 @@ export default function Footer() {
           <h2 className="font-black text-white">Contact information</h2>
 
           <div className="mt-5 space-y-4 text-slate-400">
-            <p>📍 Francistown, Botswana</p>
+            <p>📍 Plot 64271, Unit A1, Block 3 Industrial, Gaborone</p>
 
             <a
-              href="tel:+26700000000"
+              href="tel:++267 396 0322"
               className="block transition hover:text-white"
             >
-              📞 +267 00 000 000
+              📞 +267 396 0322
             </a>
 
             <a
-              href="mailto:info@swiftcourier.co.bw"
+              href="mailto:info@dropit.co.bw"
               className="block transition hover:text-white"
             >
-              ✉️ info@swiftcourier.co.bw
+              ✉️ info@dropit.co.bw
             </a>
 
             <p>🕒 Monday–Friday: 08:00–17:00</p>
@@ -91,7 +91,7 @@ export default function Footer() {
 
       <div className="border-t border-slate-800">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-6 py-6 text-sm text-slate-500 md:flex-row">
-          <p>© 2026 Swift Courier Services. All rights reserved.</p>
+          <p>© 2026 Drop It Courier Services. All rights reserved.</p>
 
           <div className="flex gap-6">
             <a href="#" className="hover:text-white">

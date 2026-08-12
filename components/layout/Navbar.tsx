@@ -1,6 +1,8 @@
 "use client";
-
+import Image from "next/image";
 import { useState } from "react";
+
+
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -8,21 +10,18 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a href="/" className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-700 text-xl text-white">
-            📦
-          </div>
-
-          <div>
-            <p className="text-lg font-bold leading-none text-blue-800">
-              Swift Courier
-            </p>
-
-            <p className="mt-1 text-xs font-medium uppercase tracking-wider text-slate-500">
-              Fast. Secure. Reliable.
-            </p>
-          </div>
-        </a>
+      
+          
+<a href="/" className="flex items-center">
+  <Image
+    src="/logos/drop-it-logo.png"
+    alt="Drop It Courier Services"
+    width={190}
+    height={64}
+    priority
+    className="h-auto w-[190px]"
+  />
+</a>
 
         <nav className="hidden items-center gap-8 text-sm font-semibold text-slate-700 lg:flex">
           <a className="transition hover:text-blue-700" href="/">
@@ -37,9 +36,7 @@ export default function Navbar() {
             Services
           </a>
 
-          <a className="transition hover:text-blue-700" href="/founder">
-            Founder
-          </a>
+          
 
           <a className="transition hover:text-blue-700" href="/track">
             Track Parcel
@@ -55,7 +52,7 @@ export default function Navbar() {
             href="/quote"
             className="rounded-xl bg-orange-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-orange-600"
           >
-            Request Quote
+            Request a Quote
           </a>
         </div>
 
@@ -84,9 +81,7 @@ export default function Navbar() {
               Services
             </a>
 
-            <a href="/founder" onClick={() => setMenuOpen(false)}>
-              Founder
-            </a>
+            
 
             <a href="/track" onClick={() => setMenuOpen(false)}>
               Track Parcel

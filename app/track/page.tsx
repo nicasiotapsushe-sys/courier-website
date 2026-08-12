@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import Navbar from "../../components/layout/Navbar";
+
 
 type TrackingEvent = {
   status: string;
@@ -144,7 +144,7 @@ export default function TrackPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <Navbar />
+     
 
       <section className="bg-slate-950 py-24 text-white">
         <div className="mx-auto max-w-7xl px-6">
