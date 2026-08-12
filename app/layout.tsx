@@ -4,13 +4,12 @@ import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/footer";
 export const metadata: Metadata = {
   title: {
-    default: "Swift Courier Services",
-    template: "%s | Swift Courier Services",
+    default: "Drop It Courier Services",
+    template: "%s | Drop It Courier Services",
   },
   description:
-    "Fast, secure and reliable courier and logistics services across Botswana and beyond.",
+    "Reliable courier, logistics, medical, warehousing and cross-border delivery services across Botswana and Southern Africa.",
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
