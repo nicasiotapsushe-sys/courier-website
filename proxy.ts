@@ -32,10 +32,11 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-  const { data } = await supabase.auth.getClaims();
+  const {
+  data: { user },
+} = await supabase.auth.getUser();
 
-const user = data?.claims;
-  const pathname = request.nextUrl.pathname;
+const pathname = request.nextUrl.pathname;
 
   const isAdminRoute = pathname.startsWith("/admin");
   const isLoginPage = pathname === "/admin/login";
