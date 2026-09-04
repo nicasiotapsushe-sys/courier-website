@@ -1,11 +1,17 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+if (pathname.startsWith("/admin")) {
+  return null;
+}
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">

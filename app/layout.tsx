@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/footer";
+
 export const metadata: Metadata = {
   title: {
     default: "Drop It Courier Services",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
   description:
     "Reliable courier, logistics, medical, warehousing and cross-border delivery services across Botswana and Southern Africa.",
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -1,7 +1,8 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-
+import { FormEvent, useState,useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import QRCode from "qrcode";
 type CreatedShipment = {
   trackingNumber: string;
   senderName: string;
@@ -15,33 +16,158 @@ function generateTrackingNumber() {
   const year = new Date().getFullYear();
   const randomNumber = Math.floor(100000 + Math.random() * 900000);
 
-  return `SWC-${year}-${randomNumber}`;
+  return `DIT-${year}-${randomNumber}`;
 }
 
+const serviceLocations = [
+  { code: "GBE", name: "Gaborone" },
+  { code: "LOB", name: "Lobatse" },
+  { code: "RAM", name: "Ramotswa" },
+  { code: "MOL", name: "Molepolole" },
+  { code: "KYE", name: "Kanye" },
+  { code: "MOC", name: "Mochudi" },
+  { code: "JWG", name: "Jwaneng" },
+  { code: "OODI", name: "Oodi" },
+  { code: "MAH", name: "Mahalapye" },
+  { code: "DIBETE", name: "Dibete" },
+  { code: "PALLAROAD", name: "Palla Road" },
+  { code: "SHOSHONG", name: "Shoshong" },
+  { code: "PLY", name: "Palapye" },
+  { code: "SRW", name: "Serowe" },
+  { code: "SER", name: "Serule" },
+  { code: "SPK", name: "Selibe Phikwe" },
+  { code: "BOB", name: "Bobonong" },
+  { code: "MMD", name: "Mmadinare" },
+  { code: "FRW", name: "Francistown" },
+  { code: "TNT", name: "Tonota" },
+  { code: "MATH", name: "Mathangwane" },
+  { code: "MAS", name: "Masunga" },
+  { code: "SEB", name: "Sebina" },
+  { code: "TTM", name: "Tutume" },
+  { code: "LTK", name: "Letlhakane" },
+  { code: "NAT", name: "Nata" },
+  { code: "MAU", name: "Maun" },
+  { code: "KAS", name: "Kasane" },
+  { code: "GWE", name: "Gweta" },
+];
+
 export default function CreateShipmentPage() {
+  const searchParams = useSearchParams();
+
+const quoteId = searchParams.get("quoteId") || "";
+
+const quotePrefill = {
+  senderName: searchParams.get("senderName") || "",
+  senderPhone: searchParams.get("senderPhone") || "",
+  senderEmail: searchParams.get("senderEmail") || "",
+  pickupAddress: searchParams.get("pickupAddress") || "",
+  origin: searchParams.get("origin") || "",
+  deliveryAddress: searchParams.get("deliveryAddress") || "",
+  destination: searchParams.get("destination") || "",
+  parcelType: searchParams.get("parcelType") || "",
+  service: searchParams.get("service") || "",
+  weight: searchParams.get("weight") || "",
+  parcelValue: searchParams.get("parcelValue") || "",
+  notes: searchParams.get("notes") || "",
+};
   const [createdShipment, setCreatedShipment] =
     useState<CreatedShipment | null>(null);
+    const [qrCodeUrl, setQrCodeUrl] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-
-    const shipment: CreatedShipment = {
-      trackingNumber: generateTrackingNumber(),
-      senderName: String(formData.get("senderName")),
-      recipientName: String(formData.get("recipientName")),
-      origin: String(formData.get("origin")),
-      destination: String(formData.get("destination")),
-      service: String(formData.get("service")),
-    };
-
-    setCreatedShipment(shipment);
-    form.reset();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    useEffect(() => {
+  if (!createdShipment) {
+    setQrCodeUrl("");
+    return;
   }
 
+  const trackingUrl =
+    `${window.location.origin}/track?tracking=${encodeURIComponent(
+      createdShipment.trackingNumber
+    )}`;
+
+  QRCode.toDataURL(trackingUrl, {
+    width: 300,
+    margin: 2,
+  })
+    .then(setQrCodeUrl)
+    .catch((error) => {
+      console.error("Could not generate QR code:", error);
+    });
+}, [createdShipment]);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+  if (isSubmitting) return;
+
+setIsSubmitting(true);
+
+  console.log("CREATE SHIPMENT SUBMIT FIRED");
+
+  const form = event.currentTarget;
+  const formData = new FormData(form);
+
+  const trackingNumber = generateTrackingNumber();
+
+  const shipmentPayload = {
+    trackingNumber,
+    quoteId: quoteId || null,
+    senderName: String(formData.get("senderName")),
+    senderPhone: String(formData.get("senderPhone")),
+    senderEmail: String(formData.get("senderEmail") || ""),
+    pickupAddress: String(formData.get("pickupAddress")),
+    origin: String(formData.get("origin")),
+    recipientName: String(formData.get("recipientName")),
+    recipientPhone: String(formData.get("recipientPhone")),
+    recipientEmail: String(formData.get("recipientEmail") || ""),
+    deliveryAddress: String(formData.get("deliveryAddress")),
+    destination: String(formData.get("destination")),
+    parcelType: String(formData.get("parcelType")),
+    service: String(formData.get("service")),
+    weight: Number(formData.get("weight")),
+    parcelValue: formData.get("parcelValue")
+      ? Number(formData.get("parcelValue"))
+      : null,
+    estimatedDelivery: String(formData.get("estimatedDelivery")),
+paymentStatus: "Pending",
+    notes: String(formData.get("notes") || ""),
+  };
+
+  try {
+  const response = await fetch("/api/shipments", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(shipmentPayload),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    alert(result.error || "Failed to create shipment.");
+    return;
+  }
+
+  setCreatedShipment({
+    trackingNumber,
+    senderName: shipmentPayload.senderName,
+    recipientName: shipmentPayload.recipientName,
+    origin: shipmentPayload.origin,
+    destination: shipmentPayload.destination,
+    service: shipmentPayload.service,
+  });
+
+  form.reset();
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+} finally {
+  setIsSubmitting(false);
+}
+}
   return (
     <main className="min-h-screen bg-slate-100 text-slate-900">
       <section className="border-b border-slate-200 bg-white">
@@ -96,6 +222,34 @@ export default function CreateShipmentPage() {
               >
                 Copy Tracking Number
               </button>
+
+<a
+  href={`/track?tracking=${encodeURIComponent(
+    createdShipment.trackingNumber
+  )}`}
+  className="rounded-xl bg-slate-950 px-7 py-4 text-center font-black text-white hover:bg-slate-800"
+>
+  Track This Shipment
+</a>
+
+{qrCodeUrl && (
+  <div className="rounded-2xl border border-green-200 bg-white p-4 text-center">
+    <p className="text-sm font-bold uppercase tracking-widest text-green-700">
+      Shipment QR Code
+    </p>
+
+    <img
+      src={qrCodeUrl}
+      alt={`QR code for ${createdShipment.trackingNumber}`}
+      className="mx-auto mt-3 h-48 w-48"
+    />
+
+    <p className="mt-3 text-sm font-semibold text-green-800">
+      Scan to track this parcel
+    </p>
+  </div>
+)}
+
             </div>
 
             <div className="mt-7 grid gap-5 border-t border-green-200 pt-7 sm:grid-cols-2 lg:grid-cols-4">
@@ -135,6 +289,10 @@ export default function CreateShipmentPage() {
           className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm md:p-10"
         >
           <section>
+
+            <p className="mt-2 text-sm text-slate-500">
+  Fields marked <span className="font-bold text-orange-500">*</span> are required.
+</p>
             <p className="text-sm font-bold uppercase tracking-widest text-orange-500">
               Sender information
             </p>
@@ -147,7 +305,7 @@ export default function CreateShipmentPage() {
                   htmlFor="senderName"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Sender name
+                 Sender name <span className="text-orange-500">*</span>
                 </label>
 
                 <input
@@ -155,6 +313,7 @@ export default function CreateShipmentPage() {
                   name="senderName"
                   type="text"
                   required
+                  defaultValue={quotePrefill.senderName}
                   placeholder="Full name or business name"
                   className="w-full rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                 />
@@ -165,17 +324,21 @@ export default function CreateShipmentPage() {
                   htmlFor="senderPhone"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Sender phone
+                  Sender phone<span className="text-orange-500">*</span>
                 </label>
 
                 <input
-                  id="senderPhone"
-                  name="senderPhone"
-                  type="tel"
-                  required
-                  placeholder="+267"
-                  className="w-full rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
-                />
+  id="senderPhone"
+  name="senderPhone"
+  type="tel"
+  required
+  defaultValue={quotePrefill.senderPhone}
+  inputMode="tel"
+  pattern="(\+267)?[0-9]{8}"
+  title="Enter an 8-digit Botswana number, optionally starting with +267"
+  placeholder="Example: 77123456 or +26777123456"
+  className="w-full rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+/>
               </div>
 
               <div>
@@ -183,13 +346,17 @@ export default function CreateShipmentPage() {
                   htmlFor="senderEmail"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Sender email
+                 Sender email{" "}
+<span className="font-normal text-slate-400">
+  (optional)
+</span>
                 </label>
 
                 <input
                   id="senderEmail"
                   name="senderEmail"
                   type="email"
+                  defaultValue={quotePrefill.senderEmail}
                   placeholder="sender@example.com"
                   className="w-full rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                 />
@@ -200,17 +367,29 @@ export default function CreateShipmentPage() {
                   htmlFor="origin"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Origin town
+                  Origin town<span className="text-orange-500">*</span>
                 </label>
 
-                <input
-                  id="origin"
-                  name="origin"
-                  type="text"
-                  required
-                  placeholder="Example: Francistown"
-                  className="w-full rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
-                />
+                <select
+  id="origin"
+  name="origin"
+  required
+  defaultValue={quotePrefill.origin}
+  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+>
+  <option value="" disabled>
+    Select origin town
+  </option>
+
+  {serviceLocations.map((location) => (
+    <option
+      key={location.code}
+      value={location.name}
+    >
+      {location.code} — {location.name}
+    </option>
+  ))}
+</select>
               </div>
 
               <div className="md:col-span-2">
@@ -226,6 +405,7 @@ export default function CreateShipmentPage() {
                   name="pickupAddress"
                   rows={4}
                   required
+                  defaultValue={quotePrefill.pickupAddress}
                   placeholder="Enter the complete pickup address"
                   className="w-full resize-none rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                 />
@@ -248,17 +428,18 @@ export default function CreateShipmentPage() {
                   htmlFor="recipientName"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Recipient name
+                  Recipient name <span className="text-orange-500">*</span>
                 </label>
 
                 <input
-                  id="recipientName"
-                  name="recipientName"
-                  type="text"
-                  required
-                  placeholder="Recipient's full name"
-                  className="w-full rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
-                />
+   
+    id="recipientName"
+    name="recipientName"
+    type="text"
+    required
+    placeholder="Recipient's full name"
+    className="w-full rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+  />
               </div>
 
               <div>
@@ -266,7 +447,7 @@ export default function CreateShipmentPage() {
                   htmlFor="recipientPhone"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Recipient phone
+                  Recipient phone <span className="text-orange-500">*</span>
                 </label>
 
                 <input
@@ -284,7 +465,7 @@ export default function CreateShipmentPage() {
                   htmlFor="recipientEmail"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Recipient email
+                  Recipient email <span className="font-normal text-slate-400">(optional)</span>
                 </label>
 
                 <input
@@ -301,17 +482,29 @@ export default function CreateShipmentPage() {
                   htmlFor="destination"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Destination town
+                  Destination town <span className="text-orange-500">*</span>
                 </label>
 
-                <input
-                  id="destination"
-                  name="destination"
-                  type="text"
-                  required
-                  placeholder="Example: Gaborone"
-                  className="w-full rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
-                />
+                <select
+  id="destination"
+  name="destination"
+  required
+  defaultValue={quotePrefill.destination}
+  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+>
+  <option value="" disabled>
+    Select destination town
+  </option>
+
+  {serviceLocations.map((location) => (
+    <option
+      key={location.code}
+      value={location.name}
+    >
+      {location.code} — {location.name}
+    </option>
+  ))}
+</select>
               </div>
 
               <div className="md:col-span-2">
@@ -319,7 +512,7 @@ export default function CreateShipmentPage() {
                   htmlFor="deliveryAddress"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Delivery address
+                  Delivery address <span className="text-orange-500">*</span>
                 </label>
 
                 <textarea
@@ -327,6 +520,7 @@ export default function CreateShipmentPage() {
                   name="deliveryAddress"
                   rows={4}
                   required
+                  defaultValue={quotePrefill.deliveryAddress}
                   placeholder="Enter the complete delivery address"
                   className="w-full resize-none rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                 />
@@ -349,14 +543,14 @@ export default function CreateShipmentPage() {
                   htmlFor="parcelType"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Parcel type
+                  Parcel type <span className="text-orange-500">*</span>
                 </label>
 
                 <select
                   id="parcelType"
                   name="parcelType"
                   required
-                  defaultValue=""
+                  defaultValue={quotePrefill.parcelType}
                   className="w-full rounded-xl border border-slate-300 bg-white px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                 >
                   <option value="" disabled>
@@ -376,14 +570,14 @@ export default function CreateShipmentPage() {
                   htmlFor="service"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Delivery service
+                  Delivery service <span className="text-orange-500">*</span>
                 </label>
 
                 <select
                   id="service"
                   name="service"
                   required
-                  defaultValue=""
+                  defaultValue={quotePrefill.service}
                   className="w-full rounded-xl border border-slate-300 bg-white px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                 >
                   <option value="" disabled>
@@ -406,7 +600,7 @@ export default function CreateShipmentPage() {
                   htmlFor="weight"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Weight in kilograms
+                 Weight (kg) <span className="text-orange-500">*</span>
                 </label>
 
                 <input
@@ -416,6 +610,7 @@ export default function CreateShipmentPage() {
                   min="0.1"
                   step="0.1"
                   required
+                  defaultValue={quotePrefill.weight}
                   placeholder="Example: 2.5"
                   className="w-full rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                 />
@@ -426,13 +621,16 @@ export default function CreateShipmentPage() {
                   htmlFor="parcelValue"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Parcel value in pula
+                  Parcel value (P) <span className="font-normal text-slate-400">
+  (optional)
+</span>
                 </label>
 
                 <input
                   id="parcelValue"
                   name="parcelValue"
                   type="number"
+                  defaultValue={quotePrefill.parcelValue}
                   min="0"
                   placeholder="Example: 1500"
                   className="w-full rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
@@ -444,52 +642,35 @@ export default function CreateShipmentPage() {
                   htmlFor="estimatedDelivery"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Estimated delivery date
+                  Estimated delivery date <span className="text-orange-500">*</span>
                 </label>
 
                 <input
-                  id="estimatedDelivery"
-                  name="estimatedDelivery"
-                  type="date"
-                  required
-                  className="w-full rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
-                />
+  id="estimatedDelivery"
+  name="estimatedDelivery"
+  type="date"
+  required
+  min={new Date().toISOString().split("T")[0]}
+  className="w-full rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+/>
               </div>
 
-              <div>
-                <label
-                  htmlFor="paymentStatus"
-                  className="mb-2 block text-sm font-bold text-slate-700"
-                >
-                  Payment status
-                </label>
-
-                <select
-                  id="paymentStatus"
-                  name="paymentStatus"
-                  required
-                  defaultValue="Pending"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
-                >
-                  <option value="Pending">Pending</option>
-                  <option value="Paid">Paid</option>
-                  <option value="Cash on Delivery">Cash on delivery</option>
-                  <option value="Account Customer">Account customer</option>
-                </select>
-              </div>
-
+              
               <div className="md:col-span-2 lg:col-span-3">
                 <label
                   htmlFor="notes"
                   className="mb-2 block text-sm font-bold text-slate-700"
                 >
-                  Handling notes
+                  Handling notes<span className="font-normal text-slate-400">
+  (optional)
+</span>
                 </label>
 
                 <textarea
                   id="notes"
                   name="notes"
                   rows={5}
+                  defaultValue={quotePrefill.notes}
                   placeholder="Fragile, keep upright, call before delivery, or other instructions"
                   className="w-full resize-none rounded-xl border border-slate-300 px-4 py-4 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                 />
@@ -506,11 +687,12 @@ export default function CreateShipmentPage() {
             </a>
 
             <button
-              type="submit"
-              className="rounded-xl bg-orange-500 px-8 py-4 font-black text-white hover:bg-orange-600"
-            >
-              Create Shipment
-            </button>
+  type="submit"
+  disabled={isSubmitting}
+  className="rounded-xl bg-orange-500 px-8 py-4 font-black text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
+>
+  {isSubmitting ? "Creating..." : "Create Shipment"}
+</button>
           </div>
         </form>
       </section>

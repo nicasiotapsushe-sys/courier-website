@@ -1,3 +1,5 @@
+"use client";
+import { usePathname } from "next/navigation";
 const quickLinks = [
   { label: "About Us", href: "/about" },
   { label: "Services", href: "/services" },
@@ -15,6 +17,11 @@ const serviceLinks = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
   return (
     <footer className="bg-slate-950 text-slate-300">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:grid-cols-2 lg:grid-cols-4">
